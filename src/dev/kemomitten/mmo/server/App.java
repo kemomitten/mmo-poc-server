@@ -11,9 +11,9 @@ import javax.swing.Timer;
 public class App {
 	
 	public static final int PORT = 9001;
-	public static int NEXT_UID = 0;
+	public static long NEXT_UID = 0;
 	private Thread connectThread;
-	private HashMap<Integer, Connection> users = new HashMap<Integer, Connection>();
+	private HashMap<Long, Connection> users = new HashMap<Long, Connection>();
 	private Timer ticker;
 	
 	public App() {
