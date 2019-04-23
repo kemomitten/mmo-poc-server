@@ -1,4 +1,4 @@
-package model;
+package model.dev.kemomitten.mmo.server.util;
 import java.util.HashMap;
 
 

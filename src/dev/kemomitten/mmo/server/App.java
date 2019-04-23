@@ -1,10 +1,13 @@
+package dev.kemomitten.mmo.server;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.net.ServerSocket;
-import model.ServerProcessProtocol;
+import java.net.Socket;
+
+import model.dev.kemomitten.mmo.server.util.ServerProcessProtocol;
 
 public class App {
 
