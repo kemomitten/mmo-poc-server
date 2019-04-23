@@ -1,45 +1,60 @@
 package dev.kemomitten.mmo.server;
 
-import java.io.BufferedReader;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
+import java.util.HashMap;
 
-import model.dev.kemomitten.mmo.server.util.ServerProcessProtocol;
+import javax.swing.Timer;
 
 public class App {
-
-	public static void main(String[] args) {
-		int portNumber = 9001;
-		
+	
+	public static final int PORT = 9001;
+	public static int NEXT_UID = 0;
+	private Thread connectThread;
+	private HashMap<Integer, Connection> users = new HashMap<Integer, Connection>();
+	private Timer ticker;
+	
+	public App() {
 		try{
-			ServerSocket serverSocket = new ServerSocket(portNumber);
-			Socket clientSocket = serverSocket.accept();
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			
-			String inputLine, outputLine;
-			
-			ServerProcessProtocol sp = new ServerProcessProtocol();
-			
-			while(clientSocket.isConnected()) {
-				while((inputLine = in.readLine()) != null) {
-					outputLine = sp.processInput(inputLine);
-					out.println(outputLine);
-					if(outputLine.equals("Disconnect")) {
-						break;
+			// Init server socket
+			final ServerSocket serverSocket = new ServerSocket(PORT);
+			// Create seperate thread to accept any new incomming
+			// Thread is created with a lambda expression to handle new connections
+			connectThread = new Thread(() -> {
+				try {
+					Connection c = new Connection(serverSocket.accept());
+					// Give user whatever starting info needed
+					
+					// Add to pool of connected users
+					while (users.containsKey(NEXT_UID)) {
+						// If UID in use then increment till not in use
+						NEXT_UID++;
 					}
+					users.put(NEXT_UID, c);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			}
+			});
+			// Start accepting connections
+			connectThread.start();
 			
+			// Server loop, set to go 180 times a second
+			ticker = new Timer(1000/180, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
+			serverSocket.close();
 		}catch(IOException e){
-			System.out.println("Exception caught when trying to listen on port "+portNumber+" or listening for a connection");
+			System.out.println("Exception caught when trying to listen on port "+PORT+" or listening for a connection");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-
 	}
-
+	
+	public static void main(String[] args) {
+		new App();
+	}
 }
