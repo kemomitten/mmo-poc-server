@@ -23,9 +23,6 @@ public class App {
 			String inputLine, outputLine;
 			
 			ServerProcessProtocol sp = new ServerProcessProtocol();
-			//outputLine = sp.processInput(null);
-			//out.println(outputLine);
-			
 			
 			while(clientSocket.isConnected()) {
 				while((inputLine = in.readLine()) != null) {
