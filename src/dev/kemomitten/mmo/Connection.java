@@ -1,4 +1,4 @@
-package dev.kemomitten.mmo.server;
+package dev.kemomitten.mmo;
 
 import java.io.BufferedReader;
 import java.io.IOException;

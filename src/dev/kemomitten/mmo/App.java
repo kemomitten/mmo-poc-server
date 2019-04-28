@@ -1,4 +1,4 @@
-package dev.kemomitten.mmo.server;
+package dev.kemomitten.mmo;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +32,8 @@ public class App {
 						// If UID in use then increment till not in use
 						NEXT_UID++;
 					}
+					c.sendMsg(NEXT_UID+"");
+					c.sendMsg("add,"+NEXT_UID+",dev.kemomitten.mmo.map.entities.Entity,0,0,32,32");
 					users.put(NEXT_UID, c);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -46,7 +48,6 @@ public class App {
 					
 				}
 			});
-			serverSocket.close();
 		}catch(IOException e){
 			System.out.println("Exception caught when trying to listen on port "+PORT+" or listening for a connection");
 			System.out.println(e.getMessage());
