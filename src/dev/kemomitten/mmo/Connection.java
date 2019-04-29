@@ -37,4 +37,11 @@ public class Connection {
 			return null;
 		}
 	}
+	
+	public boolean isConnected() {
+		return socket.isConnected();
+	}
+	public boolean isClosed() {
+		return false;
+	}
 }
